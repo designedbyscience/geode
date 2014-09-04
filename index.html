@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	
+	
+	<head>
+		
+		
+		<style type="text/css" media="screen">
+			
+			
+		#canvas{
+			width: 1024px;
+			height: 1024px;
+		}
+		</style>
+	</head>
+	<body>
+		
+		
+		
+		<canvas id="canvas" width=1024 height=1024></canvas>
+		
+		<script type="text/javascript">
+			
+			
+		var c = document.getElementById("canvas").getContext("2d");
+		c.globalCompositeOperation = "destination-over";
+		
+		var emitters = [];
+
+		
+		
+		var colors = ["red", "blue", "orange", "purple", "yellow"];
+		
+		for (var i = 0; i < 5; i++) {
+
+			var e = {};
+			
+			e.x = Math.random()*1024;
+			e.y = Math.random()*1024;
+			e.radius = 0;
+			e.color = colors[i];
+			e.ci = i % colors.length;
+			
+
+			emitters.push(e);
+			
+			// Make some clustered emitters
+			var n = Math.floor(Math.random()*15);
+			
+			for (var j = 0; j < n; j++) {
+
+				var ce = {};
+				
+				ce.x = (Math.random()*40)+e.x
+				ce.y = (Math.random()*40)+e.y
+				ce.ci = e.ci;
+
+				ce.radius = 0;
+				
+				emitters.push(ce);
+			}
+		}
+		console.log(emitters);
+		
+		
+		setInterval(function(){
+			console.log("fired");
+			for (var i = 0; i < emitters.length; i++) {
+				var e = emitters[i];
+				
+				c.strokeStyle = colors[e.ci];
+				c.fillStyle = colors[e.ci];
+				c.lineWidth = 20;
+				c.beginPath();
+				c.arc(e.x, e.y, e.radius, 0, Math.PI*2, false);
+				c.stroke();
+				c.fill();
+				c.closePath();
+				
+				e.radius += 20;	
+				
+				
+				if( e.ci < colors.length-1){
+					
+					e.ci++;
+					
+				}else{
+					e.ci = 0;
+				}			
+			}
+			
+
+			
+		}, 50);
+			
+			
+		</script>
+	</body>
+</html>
