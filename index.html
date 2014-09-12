@@ -8,10 +8,6 @@
 		<style type="text/css" media="screen">
 			
 			
-		#canvas{
-			width: 1024px;
-			height: 1024px;
-		}
 		</style>
 	</head>
 	<body>
@@ -19,81 +15,44 @@
 		
 		
 		<canvas id="canvas" width=1024 height=1024></canvas>
-		
+		<script src="assets/javascript/designedbyscience.utils.canvas.js" type="text/javascript" charset="utf-8"></script>		
+		<script src="assets/javascript/designedbyscience.geode.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+
+		designedbyscience.geode.colors = ["red", "blue", "orange", "purple", "yellow"];			
 			
-			
+			document.getElementById("canvas").width = window.innerWidth;
+			document.getElementById("canvas").height = window.innerHeight;			
 		var c = document.getElementById("canvas").getContext("2d");
 		c.globalCompositeOperation = "destination-over";
 		
 		var emitters = [];
-
-		
-		
-		var colors = ["red", "blue", "orange", "purple", "yellow"];
 		
 		for (var i = 0; i < 5; i++) {
 
-			var e = {};
-			
-			e.x = Math.random()*1024;
-			e.y = Math.random()*1024;
-			e.radius = 0;
-			e.color = colors[i];
-			e.ci = i % colors.length;
+			emitters.push(new designedbyscience.geode.emitter({
+					x: Math.random()*1024,
+					y: Math.random()*1024,
+					color_index: 0,
+					clustering: Math.floor(Math.random()*15)
+			}));
 			
 
-			emitters.push(e);
-			
-			// Make some clustered emitters
-			var n = Math.floor(Math.random()*15);
-			
-			for (var j = 0; j < n; j++) {
-
-				var ce = {};
-				
-				ce.x = (Math.random()*40)+e.x
-				ce.y = (Math.random()*40)+e.y
-				ce.ci = e.ci;
-
-				ce.radius = 0;
-				
-				emitters.push(ce);
-			}
 		}
-		console.log(emitters);
 		
+		window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.oRequestAnimationFrame;
 		
-		setInterval(function(){
-			console.log("fired");
+		var step = function(timestamp){
 			for (var i = 0; i < emitters.length; i++) {
-				var e = emitters[i];
-				
-				c.strokeStyle = colors[e.ci];
-				c.fillStyle = colors[e.ci];
-				c.lineWidth = 20;
-				c.beginPath();
-				c.arc(e.x, e.y, e.radius, 0, Math.PI*2, false);
-				c.stroke();
-				c.fill();
-				c.closePath();
-				
-				e.radius += 20;	
-				
-				
-				if( e.ci < colors.length-1){
-					
-					e.ci++;
-					
-				}else{
-					e.ci = 0;
-				}			
-			}
+				emitters[i].draw(c);
+		
+			}			
 			
+			requestAnimationFrame(step);
+		}
 
-			
-		}, 50);
-			
+
+		requestAnimationFrame(step);
 			
 		</script>
 	</body>
