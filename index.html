@@ -29,13 +29,18 @@
 		var emitters = [];
 		
 		for (var i = 0; i < 5; i++) {
-
-			emitters.push(new designedbyscience.geode.emitter({
+			var e = new designedbyscience.geode.emitter({
 					x: Math.random()*1024,
 					y: Math.random()*1024,
-					color_index: 0,
+					colorSelectorName: "gradient",
+					// colorSelectorOptions: {
+					// 	colorList: designedbyscience.geode.colors
+					// },
 					clustering: Math.floor(Math.random()*15)
-			}));
+			});
+			
+			// e.setColorSelector("list", {colorList: designedbyscience.geode.colors});
+			emitters.push(e);
 			
 
 		}
@@ -44,8 +49,7 @@
 		
 		var step = function(timestamp){
 			for (var i = 0; i < emitters.length; i++) {
-				emitters[i].draw(c);
-		
+				emitters[i].draw(c);		
 			}			
 			
 			requestAnimationFrame(step);

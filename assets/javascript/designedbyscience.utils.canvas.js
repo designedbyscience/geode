@@ -4,9 +4,9 @@ designedbyscience.utils = {};
 designedbyscience.utils.canvas = {
 	
 	
-	to_hsba_string: function(h,s,b,a){
+	to_hsl_string: function(h,s,l){
 		
-		return "hsba(" + [h,s,b].join() +")";
+		return "hsl(" + h + ", " + s + "%, " + l +"%)";
 	}
 	
 };
